@@ -1,0 +1,4 @@
+@Data_Transfer_API_HostAddress = https://localhost:7256
+
+GET {{Data_Transfer_API_HostAddress}}/api/Profile_/67b27ab1a27c01b71ec8ff8e
+Accept: application/json
