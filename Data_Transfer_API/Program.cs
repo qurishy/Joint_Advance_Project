@@ -1,5 +1,8 @@
 using Data_Transfer_API.DATA;
 using Data_Transfer_API.DATA.Service_Db;
+using Data_Transfer_API.DTO;
+using Data_Transfer_API.Model;
+using Data_Transfer_API.Model.DTOClasses;
 using Data_Transfer_API.Repository;
 using Data_Transfer_API.Repository.Profile;
 using MongoDB.Driver;
@@ -11,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddAutoMapper(typeof(ProfileMapper));
 
 builder.Services.Configure<MongoDb_Setting>(
     builder.Configuration.GetSection("MongoDB")
@@ -25,7 +29,7 @@ builder.Services.AddSingleton<IMongoClient>(serviceProvider =>
 
 builder.Services.AddScoped<IMongoService, MongoService>();
 
-builder.Services.AddScoped(typeof(IRepository<>),typeof (Repository<>));
+//builder.Services.AddScoped(typeof(IRepository<>),typeof (Repository<>));
 
 builder.Services.AddScoped<IUser_Service, User_Service>();
 

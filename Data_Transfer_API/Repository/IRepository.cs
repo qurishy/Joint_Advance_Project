@@ -10,7 +10,7 @@
 
            // Task UpdateAsync(string collectionName, Guid id, T entity);
 
-            Task DeleteAsync( T entity, Guid id);
+            Task DeleteAsync( Guid id);
 
         
 

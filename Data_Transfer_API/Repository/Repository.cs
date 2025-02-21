@@ -47,7 +47,7 @@ namespace Data_Transfer_API.Repository
         }
 
         //this method is used to delete data 
-        public async Task DeleteAsync(T entity , Guid id)
+        public async Task DeleteAsync( Guid id)
         {
            try
             {
