@@ -73,7 +73,7 @@ namespace Data_Transfer_API.Controllers
             {
                 if(value != null)
                 {
-                    User_Info temp_user = _mapper.Map<User_Info>(value);
+                    User_Info temp_user = _mapper.Map<User_Info>(value);git
 
                     
 
