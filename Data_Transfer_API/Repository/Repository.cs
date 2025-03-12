@@ -47,7 +47,7 @@ namespace Data_Transfer_API.Repository
         }
 
         //this method is used to delete data 
-        public async Task DeleteAsync( Guid id)
+        public async Task DeleteAsync( string id)
         {
            try
             {
@@ -86,7 +86,7 @@ namespace Data_Transfer_API.Repository
            
         }
 
-        public async Task<T> GetByIdAsync(Guid id)
+        public async Task<T> GetByIdAsync(string id)
         {
            try
             {

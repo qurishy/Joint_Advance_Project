@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 
 namespace Data_Transfer_API.Controllers
 {
@@ -45,13 +46,15 @@ namespace Data_Transfer_API.Controllers
         {
             try
             {
-                  if (!Guid.TryParse(id, out Guid userId))
-                  {
-                    return BadRequest("Invalid user ID format.");
-                    
-                    }
+               
+                // Check if the string is null or empty
+                if (string.IsNullOrEmpty(id))
+                {
+                    return BadRequest("User ID cannot be null or empty.");
+                }
+            
 
-                var user = await _userService.GetByIdAsync(userId);
+                var user = await _userService.GetByIdAsync(id);
                 if (user == null)
                 {
                     return NotFound("User not found.");
@@ -71,18 +74,26 @@ namespace Data_Transfer_API.Controllers
         {
             try
             {
-                if(value != null)
+
+                if (value == null)
                 {
-                    User_Info temp_user = _mapper.Map<User_Info>(value);git
-
-                    
-
-                
-                await _userService.CreateAsync(value);
-
+                    return BadRequest("User information is required.");
                 }
-                
-                return CreatedAtAction(nameof(GetUser), new { id = value.Id }, value);
+
+                // Map UserInfoDTO to User_Info
+                var userInfo = _mapper.Map<User_Info>(value);
+
+                if (userInfo == null){
+
+                    return BadRequest("There is missing values");
+                }
+
+                await _userService.CreateAsync(userInfo);
+
+
+                // Return the created user (or a success message)
+                return Ok(userInfo);
+
             }
             catch (Exception ex)
             {
@@ -92,16 +103,33 @@ namespace Data_Transfer_API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser([FromRoute] Guid id, [FromBody] User_Info value)
+        public async Task<IActionResult> UpdateUser([FromRoute] string id, [FromBody] UserInfoDTO value)
         {
             try
             {
-                if (id.ToString() != value.Id)
+
+              
+
+                // Step 1: Retrieve the existing entity from the database
+                var userInfoEntity = await _userService.GetByIdAsync(id);
+
+                if (userInfoEntity == null)
+                {
+                    return NotFound("User not found.");
+                }
+
+                if (id.ToString() != userInfoEntity.Id)
                 {
                     return BadRequest("ID in the route does not match the ID in the body.");
                 }
 
-                await _userService.updateAsync(value);
+
+                // Step 2: Map the DTO to the existing entity
+                _mapper.Map(value, userInfoEntity);
+
+                // Step 3: Update the entity in the database
+                await _userService.updateAsync(userInfoEntity);
+
                 return NoContent();
             }
             catch (Exception ex)
@@ -112,7 +140,7 @@ namespace Data_Transfer_API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser([FromRoute] Guid id)
+        public async Task<IActionResult> DeleteUser([FromRoute] string id)
         {
             try
             {

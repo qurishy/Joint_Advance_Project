@@ -13,6 +13,7 @@ namespace Data_Transfer_API.Model.DTOClasses
         public string LastName { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
+        public string PasswordHash { get; set; }
       
     }
 }

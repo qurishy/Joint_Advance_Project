@@ -4,13 +4,13 @@
     {
             Task<IEnumerable<T>> GetAllAsync();
 
-            Task<T> GetByIdAsync( Guid id);
+            Task<T> GetByIdAsync( string id);
 
             Task CreateAsync( T entity);
 
            // Task UpdateAsync(string collectionName, Guid id, T entity);
 
-            Task DeleteAsync( Guid id);
+            Task DeleteAsync( string id);
 
         
 
